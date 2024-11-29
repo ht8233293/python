@@ -61,7 +61,7 @@ def tao_bang():
             id INT AUTO_INCREMENT PRIMARY KEY,
             ten VARCHAR(100),
             khoa_id INT,
-            FOREIGN KEY (khoa_id) REFERENCES Khoa(id)
+            FOREIGN KEY (khoa_id) REFERENCES Khoa(id) ON DELETE CASCADE
         );
         ''')
 
@@ -71,12 +71,12 @@ def tao_bang():
             id INT AUTO_INCREMENT PRIMARY KEY,
             ten VARCHAR(100),
             ngay_sinh DATE,
-            gioi_tinh ENUM('M', 'F'),
+            gioi_tinh ENUM('male', 'female'),
             dia_chi VARCHAR(255),
             email VARCHAR(100),
             sdt VARCHAR(20),
             lop_id INT,
-            FOREIGN KEY (lop_id) REFERENCES Lop(id)
+            FOREIGN KEY (lop_id) REFERENCES Lop(id) ON DELETE CASCADE
         );
         ''')
 
@@ -84,21 +84,28 @@ def tao_bang():
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS GiayTo (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            sinhvien_id INT,
-            loai_giayto ENUM('BC', 'DIP', 'TRC', 'IDP'),
-            trang_thai BOOLEAN,
-            FOREIGN KEY (sinhvien_id) REFERENCES SinhVien(id)
-        );  
+            ten VARCHAR(100),
+            mo_ta VARCHAR(255)
+        );
+        ''')
+
+        # Tạo bảng Nhân thân (Relative)
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS NhanThan (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            ten VARCHAR(100),
+            quan_he VARCHAR(100),
+            lien_he VARCHAR(100)
+        );
         ''')
 
         # Tạo bảng Liên hệ (Contact)
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS LienHe (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            sinhvien_id INT,
-            ten_nguoi_giam_ho VARCHAR(100),
-            sdt_khan_cap VARCHAR(20),
-            FOREIGN KEY (sinhvien_id) REFERENCES SinhVien(id)
+            ten VARCHAR(100),
+            email VARCHAR(100),
+            sdt VARCHAR(20)
         );
         ''')
 
